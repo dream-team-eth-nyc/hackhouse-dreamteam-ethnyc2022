@@ -10,8 +10,8 @@ contract GuildBondTest is Test {
 
     function setUp() public {
         // deploy singleton
-        string memory name = "Club Penguin";
-        string memory symbol = "penguin";
+        string memory name = "Chief Baddie";
+        string memory symbol = "frog";
         bond = new GuildBond(name, symbol);
     }
 
