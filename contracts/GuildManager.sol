@@ -18,9 +18,9 @@ contract GuildManager {
         // TypeError: Explicit type conversion not allowed from non-payable "address" to "contract AugmentedGnosisSafe", which has a payable fallback function.
         // address nftAddress = address(msg.sender);
         // address payable addr = address(uint160(nftAddress));
-        require(AugmentedGnosisSafe(msg.sender).isOwner(address(this)), "add the manager as owner first");
+        require(AugmentedGnosisSafe(payable(msg.sender)).isOwner(address(this)), "add the manager as owner first");
 
-        isSafeInGuild[AugmentedGnosisSafe(msg.sender)][guild] = true;
+        isSafeInGuild[AugmentedGnosisSafe(payable(msg.sender))][guild] = true;
     }
 
     function startPlayingWithSafeInGuild(AugmentedGnosisSafe safe, GuildBond guild) external {
