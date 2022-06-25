@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-
+// This is a soulbond contract (non transferrable)
 contract GuildBond is ERC721, ERC721Burnable, Ownable {
     using Counters 
     for Counters.Counter;
@@ -23,7 +23,7 @@ contract GuildBond is ERC721, ERC721Burnable, Ownable {
         return _tokenIdCounter.current();
     }
 
-    function safeMint(address to) public {
+    function safeMint(address to) public onlyOwner {
         require(to != address(0), "ERR: CANNOT MINT TO THE 0 ADDRESS");
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
