@@ -129,7 +129,7 @@ dmypy.json
 .pyre/
 
 # Node Modules
-node_modules/
+contracts/node_modules/
 
 # Solidity Generated
 cache/
