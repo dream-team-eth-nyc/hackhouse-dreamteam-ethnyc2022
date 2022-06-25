@@ -3,7 +3,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import "../common/Enum.sol";
 import "../common/SelfAuthorized.sol";
-import "../interfaces/IERC165.sol";
+import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 
 interface Guard is IERC165 {
     function checkTransaction(
