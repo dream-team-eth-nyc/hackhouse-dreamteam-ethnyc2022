@@ -1,5 +1,5 @@
 import React from "react";
-import { HStack, Box, Button } from "@chakra-ui/react";
+import { HStack, Grid, Box, Button } from "@chakra-ui/react";
 import { TeamIcon, MockCountryPicker } from "@/components/Icons";
 import LinkButton from "@/components/LinkButton";
 import { useRouter } from "next/router";
@@ -9,11 +9,23 @@ const Navbar = () => {
   const router = useRouter();
 
   return (
-    <HStack w="100%" h="16" justifyContent="space-between" px="27px" py="16px">
-      <TeamIcon h="37px" w="37px" onClick={() => router.push("/")} />
-      <Box color="white">
+    <Grid
+      w="100%"
+      h="16"
+      color="white"
+      gridTemplateColumns="1fr 1fr 1fr"
+      px="27px"
+      py="12px"
+    >
+      <TeamIcon
+        h="37px"
+        w="44px"
+        onClick={() => router.push("/")}
+        placeSelf="center start"
+      />
+      <Box placeSelf="center">
         <LinkButton
-          href="/"
+          href="/guilds"
           variant="text"
           mr="2"
           activeProps={{ variant: "primary" }}
@@ -28,7 +40,7 @@ const Navbar = () => {
           Documentation
         </LinkButton>
       </Box>
-      <Box color="white">
+      <Box color="white" placeSelf="center end">
         <MockCountryPicker h="20px" w="68px" margin="18px" />
         {walletConnected ? (
           "Wallet Connected"
@@ -36,7 +48,7 @@ const Navbar = () => {
           <Button variant="secondary">Connect Wallet</Button>
         )}
       </Box>
-    </HStack>
+    </Grid>
   );
 };
 

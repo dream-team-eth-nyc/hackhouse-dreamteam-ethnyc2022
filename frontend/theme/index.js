@@ -1,6 +1,8 @@
 import { extendTheme } from "@chakra-ui/react";
 
 const theme = extendTheme({
+  initialColorMode: "dark",
+  useSystemColorMode: false,
   colors: {
     background: "linear-gradient(117.56deg, #1B2037 42.84%, #0F1221 98.45%)",
     gray: {
@@ -12,15 +14,42 @@ const theme = extendTheme({
       200: "#90CDF4",
       800: "#2A4365",
     },
+    primaryFontColor: {
+      darkMode: "gray.50",
+    },
+    secondaryFontColor: {
+      darkMode: "gray.50",
+    },
+  },
+  textStyles: {
+    heading1: {
+      fontFamily: "Inter",
+      fontWeight: "bold",
+      fontSize: "36px",
+    },
   },
   styles: {
     global: {
       body: {
+        color: "white",
         background: "background",
+        height: "100vh",
       },
     },
   },
   components: {
+    Container: {
+      baseStyle: {
+        maxWidth: 1200,
+        px: 4,
+        mx: "auto",
+      },
+    },
+    Headings: {
+      baseStyle: {
+        color: "white",
+      },
+    },
     Button: {
       baseStyle: {
         height: "32px",
@@ -40,6 +69,7 @@ const theme = extendTheme({
           _hover: {
             background: "gray.700",
           },
+          color: "white",
         },
         text: {
           background: "transparent",
