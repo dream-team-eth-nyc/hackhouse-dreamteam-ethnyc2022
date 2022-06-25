@@ -3,14 +3,13 @@ pragma solidity 0.8.15;
 
 import "contracts/gnosis-safe/GnosisSafe.sol";
 import "contracts/gnosis-safe/proxies/GnosisSafeProxyFactory.sol";
-import "contracts/contractAddOwner.sol";
+import "contracts/ContractAddOwner.sol";
 import "contracts/gnosis-safe/base/OwnerManager.sol";
+import "../AugmentedGnosisSafe.sol";
 
 import "forge-std/Test.sol";
 
 contract Empty {}
-
-contract CustomGnosisSafe is GnosisSafe, ContractAddOwner {}
 
 contract UserTest is Test {
     GnosisSafe singleton;
@@ -22,7 +21,7 @@ contract UserTest is Test {
 
     function setUp() public {
         // deploy singleton
-        singleton = new CustomGnosisSafe();
+        singleton = new AugmentedGnosisSafe();
 
         // deploy factory
         factory = new GnosisSafeProxyFactory();
@@ -50,9 +49,9 @@ contract UserTest is Test {
         GnosisSafe(payable(proxy)).setup(owners, 1, address(1), data, address(0), address(0), 0, payable(0));
 
         hoax(user1);
-        CustomGnosisSafe(payable(proxy)).contractAddOwner(user2, 1);
+        AugmentedGnosisSafe(payable(proxy)).contractAddOwner(user2, 1);
 
         hoax(user2);
-        CustomGnosisSafe(payable(proxy)).contractAddOwner(user3, 1);
+        AugmentedGnosisSafe(payable(proxy)).contractAddOwner(user3, 1);
     }
 }
