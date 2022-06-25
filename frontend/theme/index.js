@@ -13,10 +13,18 @@ const theme = extendTheme({
       800: "#2A4365",
     },
   },
+  textStyles: {
+    heading1: {
+      fontFamily: "Inter",
+      fontWeight: "bold",
+      fontSize: "36px",
+    },
+  },
   styles: {
     global: {
       body: {
         background: "background",
+        height: "100vh",
       },
     },
   },
@@ -40,6 +48,7 @@ const theme = extendTheme({
           _hover: {
             background: "gray.700",
           },
+          color: "white",
         },
         text: {
           background: "transparent",
