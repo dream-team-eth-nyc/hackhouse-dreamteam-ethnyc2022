@@ -14,7 +14,11 @@ contract GuildBond is ERC721, ERC721Burnable, Ownable {
     event Logging(string tellUsMore);
 
     constructor() ERC721("MyToken", "MTK") {}
- 
+
+    function safeCounterCurrent() public returns (uint256) {
+        return _tokenIdCounter.current();
+    }
+
     function safeMint(address to) public onlyOwner {
         require(to != address(0), "ERR: CANNOT MINT TO THE 0 ADDRESS");
         uint256 tokenId = _tokenIdCounter.current();
