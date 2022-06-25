@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity 0.8.15;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
@@ -15,14 +15,6 @@ contract GuildBond is ERC721, ERC721Burnable, Ownable {
 
     constructor() ERC721("MyToken", "MTK") {}
  
-    function _baseURI() internal pure override returns (string memory) {
-        return "https://www.myapp.com";
-    }
-
-    function safeCounterCurrent() public returns (uint256) {
-        return _tokenIdCounter.current();
-    }
-
     function safeMint(address to) public onlyOwner {
         require(to != address(0), "ERR: CANNOT MINT TO THE 0 ADDRESS");
         uint256 tokenId = _tokenIdCounter.current();
