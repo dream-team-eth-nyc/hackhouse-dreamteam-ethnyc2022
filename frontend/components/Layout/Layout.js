@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Navbar from '@/components/Navbar/Navbar'
 
 export const siteTitle = "DreamTeamSite"
 
@@ -24,6 +25,7 @@ const Layout = ({ children, title, content }) => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta charSet="UTF-8" />
       </Head>
+
 
       <main>
         {children}
