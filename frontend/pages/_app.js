@@ -8,7 +8,9 @@ import { PersistGate } from "redux-persist/integration/react";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { ChainId, IpfsStorage, ThirdwebProvider } from "@thirdweb-dev/react";
-
+import { ChakraProvider } from "@chakra-ui/react";
+import theme from "../theme";
+import Navbar from "@/components/Navbar/Navbar";
 
 let persistor = persistStore(store);
 
@@ -18,41 +20,39 @@ export default function MyApp({ Component, pageProps }) {
 
   return (
     <ReduxProvider store={store}>
-      <ThirdwebProvider
-        chainId={ChainId.MAINNET}
-        ipfsStorage={new IpfsStorage()} // IPFS HOST RPC goes here
-        // ipfsStorage={new IpfsStorage({
-        //   ipfsApiUrl: "http://localhost:5001",
-        //   ipfsGatewayUrl: "http://localhost:8080"
-        // })}
-        // walletConnectors={[
-        //   "walletConnect",
-        //   { name: "injected", options: { shimDisconnect: false } },
-        //   {
-        //     name: "walletLink",
-        //     options: {
-        //       appName: "DreamTeamGuildSoulbound",
-        //     },
-        //   },
-        // ]}
-      >
-        <PersistGate persistor={persistor}>
-          {Component.getLayout ? (
-            <>
-              {getLayout(<Component {...pageProps} />)}
-            </>
-          ) : (
-            <>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </>
-          )}
-        </PersistGate>
-      </ThirdwebProvider>
+      <ChakraProvider theme={theme}>
+        <ThirdwebProvider
+          chainId={ChainId.MAINNET}
+          ipfsStorage={new IpfsStorage()} // IPFS HOST RPC goes here
+          // ipfsStorage={new IpfsStorage({
+          //   ipfsApiUrl: "http://localhost:5001",
+          //   ipfsGatewayUrl: "http://localhost:8080"
+          // })}
+          // walletConnectors={[
+          //   "walletConnect",
+          //   { name: "injected", options: { shimDisconnect: false } },
+          //   {
+          //     name: "walletLink",
+          //     options: {
+          //       appName: "DreamTeamGuildSoulbound",
+          //     },
+          //   },
+          // ]}
+        >
+          <PersistGate persistor={persistor}>
+            <Navbar />
+            {Component.getLayout ? (
+              <>{getLayout(<Component {...pageProps} />)}</>
+            ) : (
+              <>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </>
+            )}
+          </PersistGate>
+        </ThirdwebProvider>
+      </ChakraProvider>
     </ReduxProvider>
-
-  )
-
+  );
 }
-
