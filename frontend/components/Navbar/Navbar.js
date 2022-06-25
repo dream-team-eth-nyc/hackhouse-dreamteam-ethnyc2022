@@ -13,7 +13,7 @@ const Navbar = () => {
       <TeamIcon h="37px" w="37px" onClick={() => router.push("/")} />
       <Box color="white">
         <LinkButton
-          href="/guilds"
+          href="/"
           variant="text"
           mr="2"
           activeProps={{ variant: "primary" }}
