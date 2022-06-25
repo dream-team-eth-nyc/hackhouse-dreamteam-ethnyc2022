@@ -26,6 +26,7 @@ const Layout = ({ children, title, content }) => {
         <meta charSet="UTF-8" />
       </Head>
 
+      <Navbar />
 
       <main>
         {children}

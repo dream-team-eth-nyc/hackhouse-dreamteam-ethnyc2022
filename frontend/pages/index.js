@@ -3,6 +3,7 @@ import Image from 'next/image'
 // import styles from '../styles/Home.module.scss'
 import styles from '@/styles/Home.module.scss'
 import ConnectButtons from '@/components/ConnectButtons/ConnectButtons'
+import GuildCard from '@/components/GuildCard/GuildCard'
 
 export default function Home() {
   return (
@@ -16,6 +17,11 @@ export default function Home() {
       <main className={styles.main}>
         hello
         <ConnectButtons />
+
+        <br />
+        <br />
+        <GuildCard />
+
       </main>
 
     </div>
