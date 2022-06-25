@@ -22,6 +22,10 @@ contract GuildBond is ERC721, ERC721Burnable, Ownable {
         _safeMint(to, tokenId);
     }
 
+    function safeCounterCurrent() public returns (uint) {
+        return _tokenIdCounter.current();
+    }
+
     // The following functions are overrides required by Solidity.
     function _afterTokenTransfer(address from, address to, uint256 tokenId)
         internal
