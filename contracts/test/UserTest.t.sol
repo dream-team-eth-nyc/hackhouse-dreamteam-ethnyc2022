@@ -3,26 +3,56 @@ pragma solidity 0.8.15;
 
 import "contracts/gnosis-safe/GnosisSafe.sol";
 import "contracts/gnosis-safe/proxies/GnosisSafeProxyFactory.sol";
+import "contracts/contractAddOwner.sol";
+import "contracts/gnosis-safe/base/OwnerManager.sol";
 
 import "forge-std/Test.sol";
+
+contract Empty {}
+
+contract CustomGnosisSafe is GnosisSafe, ContractAddOwner {}
 
 contract UserTest is Test {
     GnosisSafe singleton;
     GnosisSafeProxyFactory factory;
+    address user1;
+    address user2;
+    address user3;
+    GnosisSafeProxy user1Safe;
 
     function setUp() public {
         // deploy singleton
-        singleton = new GnosisSafe();
+        singleton = new CustomGnosisSafe();
 
         // deploy factory
         factory = new GnosisSafeProxyFactory();
+
+        user1 = address(new Empty());
+        user2 = address(new Empty());
+        user3 = address(new Empty());
     }
 
     function testCreateUser() public {
+        startHoax(user1);
         bytes memory data;
         GnosisSafeProxy proxy = factory.createProxy(address(singleton), data);
         address[] memory owners = new address[](1);
         owners[0] = address(this);
         GnosisSafe(payable(proxy)).setup(owners, 1, address(1), data, address(0), address(0), 0, payable(0));
+        user1Safe = proxy;
+    }
+
+    function testAddOwner() public {
+        bytes memory data;
+        GnosisSafeProxy proxy = factory.createProxy(address(singleton), data);
+        address[] memory owners = new address[](1);
+        owners[0] = address(user1);
+        GnosisSafe(payable(proxy)).setup(owners, 1, address(1), data, address(0), address(0), 0, payable(0));
+
+        hoax(user1);
+        CustomGnosisSafe(payable(proxy)).contractAddOwner(user2, 1);
+
+        hoax(user2);
+        CustomGnosisSafe(payable(proxy)).contractAddOwner(user3, 1);
     }
 }

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.15;
 
-import "contracts/guild-manager/GuildBond.sol";
+import "../GuildBond.sol";
 
 import "forge-std/Test.sol";
 
