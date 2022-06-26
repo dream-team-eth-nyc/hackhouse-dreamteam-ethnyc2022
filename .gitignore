@@ -136,3 +136,5 @@ cache/
 out/
 broadcast
 commands.txt
+.deps
+artifacts

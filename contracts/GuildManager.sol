@@ -11,11 +11,7 @@ contract GuildManager {
     mapping(AugmentedGnosisSafe => mapping(GuildBond => bool)) isSafeInGuild;
 
     /// @dev The World ID instance that will be used for verifying proofs
-    IWorldID internal immutable worldId;
-
-    constructor(IWorldID _worldId){
-        worldId = _worldId;
-    }
+    IWorldID internal constant worldId = IWorldID(0x9b70e899C9c19B4472472CE967a12a0079be1CD8);
 
     /// @notice create a guild and become its chief
     function createGuild(string memory name, string memory symbol) external returns(GuildBond) {
