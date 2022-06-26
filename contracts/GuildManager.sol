@@ -6,6 +6,7 @@ import "./AugmentedGnosisSafe.sol";
 import {IWorldID} from "./worldcoin/interfaces/IWorldID.sol";
 
 contract GuildManager {
+    mapping(GuildBond => AugmentedGnosisSafe) public guildToSafe;
     mapping(AugmentedGnosisSafe => mapping(GuildBond => bool)) isSafeInGuild;
 
     /// @dev The World ID instance that will be used for verifying proofs
@@ -24,8 +25,9 @@ contract GuildManager {
 
     function pledgeAllegiance(GuildBond guild) external {
         require(AugmentedGnosisSafe(payable(msg.sender)).isOwner(address(this)), "add the manager as owner first");
-
-        isSafeInGuild[AugmentedGnosisSafe(payable(msg.sender))][guild] = true;
+        AugmentedGnosisSafe safeForGuild = AugmentedGnosisSafe(payable(msg.sender));
+        // guildToSafe[guild] = safeForGuild;
+        isSafeInGuild[safeForGuild][guild] = true;
     }
 
     function startPlayingWithSafeInGuild(AugmentedGnosisSafe safe, GuildBond guild) external {
