@@ -11,11 +11,18 @@ import { AiOutlinePlus } from "react-icons/ai";
 import React from "react";
 import GuildCard from "../components/GuildCard/GuildCard";
 import ViewPendingInvitationsModal from "../components/ViewPendingInvitationsModal";
+import GuildModal from "../components/GuildModal";
 
 const Home: React.FC = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const {
+    isOpen: guildOpen,
+    onClose: guildOnClose,
+    onOpen: guildOnOpen,
+  } = useDisclosure();
   return (
     <>
+      <GuildModal isOpen={guildOpen} onClose={guildOnClose} />
       <ViewPendingInvitationsModal isOpen={isOpen} onClose={onClose} />
       <Container>
         <HStack alignItems="center" justifyContent="space-between">
@@ -30,7 +37,12 @@ const Home: React.FC = () => {
               (2 pending)
             </Text>
           </HStack>
-          <Button colorScheme="blue" size="lg" leftIcon={<AiOutlinePlus />}>
+          <Button
+            colorScheme="blue"
+            size="lg"
+            leftIcon={<AiOutlinePlus />}
+            onClick={guildOnOpen}
+          >
             Create Guild
           </Button>
         </HStack>
