@@ -29,12 +29,14 @@ const ConnectButton: React.FC = () => {
         </Button>
         <Avatar onClick={sOnOpen} size="md" cursor="pointer" />
 
-        <UserSidebar
-          isOpen={sOpen}
-          placement="right"
-          onClose={sOnClose}
-          finalFocusRef={btnRef}
-        />
+        {sOpen && (
+          <UserSidebar
+            isOpen={sOpen}
+            placement="right"
+            onClose={sOnClose}
+            finalFocusRef={btnRef}
+          />
+        )}
       </>
     );
 

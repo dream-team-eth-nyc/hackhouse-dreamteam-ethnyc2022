@@ -5,15 +5,18 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import theme from "./theme";
+import { RecoilRoot } from "recoil";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <ChakraProvider theme={theme} resetCSS>
-      <App />
-    </ChakraProvider>
+    <RecoilRoot>
+      <ChakraProvider theme={theme} resetCSS>
+        <App />
+      </ChakraProvider>
+    </RecoilRoot>
 
     <ColorModeScript initialColorMode={theme.config.initialColorMode} />
   </React.StrictMode>

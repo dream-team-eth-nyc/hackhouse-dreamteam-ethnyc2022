@@ -70,7 +70,7 @@ const ConnectModal: React.FC<ConnectModal> = ({ isOpen, onClose }) => {
     if (data) onClose();
   }, []);
 
-  return (
+  return isOpen ? (
     <Modal isOpen={isOpen} onClose={onClose} size="md">
       <ModalOverlay />
       <ModalContent bgColor="gray.900">
@@ -112,7 +112,7 @@ const ConnectModal: React.FC<ConnectModal> = ({ isOpen, onClose }) => {
         </ModalBody>
       </ModalContent>
     </Modal>
-  );
+  ) : null;
 };
 
 export default ConnectModal;

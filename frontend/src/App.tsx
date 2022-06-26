@@ -6,8 +6,11 @@ import Home from "./pages/Home";
 import { useColorMode } from "@chakra-ui/react";
 import { WagmiConfig, createClient } from "wagmi";
 import ViewGuild from "./pages/ViewGuild";
+import { RecoilRoot } from "recoil";
 
-const client = createClient();
+const client = createClient({
+  autoConnect: true,
+});
 
 function App() {
   const { colorMode, toggleColorMode } = useColorMode();
