@@ -14,11 +14,21 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  AccordionButton,
+  AccordionPanel,
+  Accordion,
+  AccordionIcon,
+  Divider,
+  useDisclosure,
+  AccordionItem,
 } from "@chakra-ui/react";
 import { BiChevronLeft, BiDotsHorizontalRounded } from "react-icons/bi";
 import { AiOutlinePlus } from "react-icons/ai";
 import { GoTriangleDown } from "react-icons/go";
 import { useParams } from "react-router-dom";
+import AddMemberModal from "../components/AddMemberModal";
+import { useState } from "react";
+import LeaveGuildModal from "../components/LeaveGuildModal";
 
 const GuildBadge: React.FC<{ title: string; number: number } & BoxProps> = ({
   title,
@@ -84,146 +94,330 @@ const GuildMemberCard: React.FC<
   </Grid>
 );
 
+const MY_ADDRESS_TEMP = "0xFuture";
+
+type GuildMember = {
+  name: string;
+  address: string;
+  message: string;
+  imageSrc: string;
+  nfts: GameNft[];
+};
+
+type GameNft = {
+  imageSrc: string;
+  link: string;
+};
+
+const fakeGuildMembers: GuildMember[] = [
+  {
+    name: "Ben",
+    address: "0xMoney",
+    message: "All warfare is based",
+    imageSrc: `${process.env.PUBLIC_URL}/image7.png`,
+    nfts: [
+      {
+        imageSrc: `${process.env.PUBLIC_URL}/Avatar.png`,
+        link: "https://nyc.ethglobal.co/",
+      },
+      {
+        imageSrc: `${process.env.PUBLIC_URL}/Avatar1.png`,
+        link: "https://nyc.ethglobal.co/",
+      },
+    ],
+  },
+  {
+    name: "Chuck",
+    address: "0xDollars",
+    message: "Hodl to guidl",
+    imageSrc: `${process.env.PUBLIC_URL}/image7.png`,
+    nfts: [
+      {
+        imageSrc: `${process.env.PUBLIC_URL}/Avatar.png`,
+        link: "https://nyc.ethglobal.co/",
+      },
+      {
+        imageSrc: `${process.env.PUBLIC_URL}/Avatar1.png`,
+        link: "https://nyc.ethglobal.co/",
+      },
+    ],
+  },
+];
+
 const GameCard: React.FC<
   {
     name: string;
-    nftCount: number;
-    profileCount: number;
     imageSrc: string;
+    guildMembers: GuildMember[];
   } & BoxProps
-> = ({ name, imageSrc, nftCount, profileCount, ...props }) => (
-  <Grid
-    gridTemplateColumns="80px 2fr 1fr 1fr auto"
-    p="24px"
-    gridColumnGap="20px"
-    background="gray.800"
-    borderRadius="10px"
-    placeItems="center"
-    {...props}
-  >
-    <Image
-      src={imageSrc}
-      placeSelf="center"
-      borderRadius="999px"
-      height="80px"
-      width="80px"
-    />
-    <Text textStyle="heading2" placeSelf="center start">
-      {name}
-    </Text>
-    <Text textStyle="subheading2" placeSelf="center">
-      {nftCount} {nftCount === 1 ? "NFT" : "NFTs"}
-    </Text>
-    <Text textStyle="subheading2" placeSelf="center">
-      {profileCount} {profileCount === 1 ? "Profile" : "Profiles"}
-    </Text>
-    <IconButton
-      aria-label="more"
-      icon={<GoTriangleDown />}
-      background="gray.700"
-    />
-  </Grid>
+> = ({ name, imageSrc, guildMembers, ...props }) => (
+  <AccordionItem borderColor="transparent" width="100%" mb="20px" {...props}>
+    {({ isExpanded }) => (
+      <>
+        <AccordionButton
+          p="24px"
+          background="gray.800"
+          borderRadius="10px"
+          _hover={{
+            background: "gray.800",
+          }}
+          display="flex"
+          flexDir="column"
+        >
+          <Grid
+            gridTemplateColumns="80px 2fr 1fr 1fr auto"
+            w="100%"
+            gridColumnGap="20px"
+            placeItems="center"
+            {...props}
+          >
+            <Image
+              src={imageSrc}
+              placeSelf="center"
+              borderRadius="999px"
+              height="80px"
+              width="80px"
+            />
+            <Text textStyle="heading2" placeSelf="center start">
+              {name}
+            </Text>
+            <Text textStyle="subheading2" placeSelf="center">
+              {guildMembers.reduce(
+                (sum, member) => sum + member.nfts.length,
+                0
+              )}{" "}
+              NFTs
+            </Text>
+            <Text textStyle="subheading2" placeSelf="center">
+              {guildMembers.length}{" "}
+              {guildMembers.length === 1 ? "Profile" : "Profiles"}
+            </Text>
+            <IconButton
+              aria-label="more"
+              icon={<AccordionIcon />}
+              background="gray.700"
+            />
+          </Grid>
+          {isExpanded && guildMembers.length ? (
+            <>
+              <Grid
+                w="100%"
+                gridTemplateColumns="1fr auto 1fr"
+                gridColumnGap="12px"
+                placeItems="center"
+              >
+                <Divider
+                  borderTopWidth="1px"
+                  borderColor="gray.700"
+                  width="100%"
+                />
+                <Text color="gray.700">Guild Members with NFTs</Text>
+                <Divider
+                  borderTopWidth="1px"
+                  borderColor="gray.700"
+                  width="100%"
+                />
+              </Grid>
+              {guildMembers.map((member, index) => (
+                <Grid
+                  key={`${name}-${member.name}-${index}`}
+                  userSelect="none"
+                  color="white"
+                  py="20px"
+                  h="110px"
+                  w="100%"
+                  gridColumnGap="20px"
+                  gridTemplateColumns="1fr 1fr 3fr 2fr 2fr 1fr"
+                  placeItems="center"
+                >
+                  <Image
+                    src={member.imageSrc}
+                    placeSelf="center"
+                    borderRadius="999px"
+                    height="48px"
+                    width="48px"
+                  />
+                  <Grid
+                    placeSelf="center start"
+                    gridRowGap="10px"
+                    gridAutoFlow="row"
+                  >
+                    <Text
+                      fontSize="16px"
+                      placeSelf="start"
+                      color="gray.100"
+                      fontWeight="bold"
+                    >
+                      {member.name}
+                    </Text>
+                    <Text fontSize="12px" color="gray.500" placeSelf="start">
+                      {member.address}
+                    </Text>
+                  </Grid>
+                  <Text placeSelf="center start">{member.message}</Text>
+                  <Text>{member.nfts.length} NFTs</Text>
+                  <Box overflow="hidden">
+                    <Grid gridColumnGap="10px" gridAutoFlow="column">
+                      {member.nfts.map((nft, index) => (
+                        <Image
+                          h="70px"
+                          src={nft.imageSrc}
+                          key={`${member.name}-nft-${index}`}
+                        />
+                      ))}
+                    </Grid>
+                  </Box>
+                  {member.address === MY_ADDRESS_TEMP ? (
+                    <Button variant="primary" disabled placeSelf="center end">
+                      You
+                    </Button>
+                  ) : (
+                    <Button variant="primary" placeSelf="center end">
+                      Play
+                    </Button>
+                  )}
+                </Grid>
+              ))}
+            </>
+          ) : null}
+        </AccordionButton>
+      </>
+    )}
+  </AccordionItem>
 );
 
 export default function ViewGuild() {
   const params = useParams();
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { isOpen: lOpen, onClose: lOnClose, onOpen: lOnOpen } = useDisclosure();
+
+  const [members, setMembers] = useState([
+    {
+      imageSrc: `${process.env.PUBLIC_URL}/Avatar.png`,
+      name: "Bob",
+      address: "0xTalent",
+    },
+    {
+      imageSrc: `${process.env.PUBLIC_URL}/Avatar.png`,
+      name: "Stephen",
+      address: "skrider.eth",
+    },
+  ]);
+
+  const handleAdd = () => {
+    setMembers((m) => [
+      ...m,
+      {
+        imageSrc: `${process.env.PUBLIC_URL}/Avatar.png`,
+        name: "Erina",
+        address: "0xErina",
+      },
+    ]);
+    onClose();
+  };
 
   return (
-    <Grid gridAutoColumns="auto" gridRowGap="20px" mx="149px" mt="20px">
-      <LinkButton
-        href="/"
-        variant="text"
-        color="blue.600"
-        placeSelf="start"
-        px="0"
-        transform="translateX(-0.5rem)"
-        _hover={{
-          color: "blue.300",
-        }}
-      >
-        <BiChevronLeft />
-        Back to your guilds
-      </LinkButton>
-      <Grid
-        gridTemplate={`
+    <>
+      {isOpen && (
+        <AddMemberModal isOpen={isOpen} onClose={onClose} onAdd={handleAdd} />
+      )}
+      {lOpen && (
+        <LeaveGuildModal
+          isOpen={lOpen}
+          onClose={lOnClose}
+          onLeave={() => console.log("leave")}
+        />
+      )}
+      <Grid gridAutoColumns="auto" gridRowGap="20px" mx="149px" mt="20px">
+        <LinkButton
+          href="/"
+          variant="text"
+          color="blue.600"
+          placeSelf="start"
+          px="0"
+          transform="translateX(-0.5rem)"
+          _hover={{
+            color: "blue.300",
+          }}
+        >
+          <BiChevronLeft />
+          Back to your guilds
+        </LinkButton>
+        <Grid
+          gridTemplate={`
 "emblem text" auto
 / auto 1fr
         `}
-        gridColumnGap="20px"
-        gridAutoFlow="column"
-        h="32"
-      >
-        <Image
-          src={`${process.env.PUBLIC_URL}/Avatar1.png`}
-          placeSelf="center"
-          borderRadius="999px"
-          height="32"
-          width="32"
-        />
-        <Flex flexDir="column" gridRowGap="17px" userSelect="none">
-          <Text textStyle="heading1">Dragon Guild</Text>
-          <Text textStyle="label1">OxBitches</Text>
-          <Text fontSize="14px" color="gray.400">
-            The boys playing games about dragons
-          </Text>
-        </Flex>
-        <GuildBadge title="Members" number={69} />
-        <GuildBadge title="Total NFTs" number={69} />
-        <GuildBadge title="Games" number={69} />
-        <Menu>
-          <MenuButton
+          gridColumnGap="20px"
+          gridAutoFlow="column"
+          h="32"
+        >
+          <Image
+            src={`${process.env.PUBLIC_URL}/Avatar1.png`}
             placeSelf="center"
-            as={IconButton}
-            icon={<BiDotsHorizontalRounded />}
+            borderRadius="999px"
+            height="32"
+            width="32"
           />
-          <MenuList>
-            <MenuItem>Leave Guild</MenuItem>
-            <MenuItem>Edit Guild</MenuItem>
-            {/* TODO replace with correct explorer */}
-            <MenuItem>See on Snowtrace</MenuItem>
-          </MenuList>
-        </Menu>
-      </Grid>
-      <Grid gridAutoFlow="column">
+          <Flex flexDir="column" gridRowGap="17px" userSelect="none">
+            <Text textStyle="heading1">Dragon Guild</Text>
+            <Text textStyle="label1">OxBitches</Text>
+            <Text fontSize="14px" color="gray.400">
+              The boys playing games about dragons
+            </Text>
+          </Flex>
+          <GuildBadge title="Members" number={69} />
+          <GuildBadge title="Total NFTs" number={69} />
+          <GuildBadge title="Games" number={69} />
+          <Menu>
+            <MenuButton
+              placeSelf="center"
+              as={IconButton}
+              icon={<BiDotsHorizontalRounded />}
+            />
+            <MenuList>
+              <MenuItem onClick={lOnOpen}>Leave Guild</MenuItem>
+              <MenuItem>Edit Guild</MenuItem>
+              {/* TODO replace with correct explorer */}
+              <MenuItem>See on Snowtrace</MenuItem>
+            </MenuList>
+          </Menu>
+        </Grid>
+        <Grid gridAutoFlow="column">
+          <Text
+            placeSelf="start"
+            textStyle="subheading2"
+            color="gray.400"
+            userSelect="none"
+          >
+            Members
+          </Text>
+          <Button variant="primary" placeSelf="end" onClick={onOpen}>
+            <AiOutlinePlus />
+            Add Member
+          </Button>
+        </Grid>
+        <HStack>
+          {members.map((props) => (
+            <GuildMemberCard key={JSON.stringify(props)} {...props} />
+          ))}
+        </HStack>
         <Text
           placeSelf="start"
           textStyle="subheading2"
           color="gray.400"
           userSelect="none"
         >
-          Members
+          Games
         </Text>
-        <Button variant="primary" placeSelf="end">
-          <AiOutlinePlus />
-          Add Member
-        </Button>
+        <Accordion>
+          <GameCard
+            name="Axie Infinity"
+            guildMembers={fakeGuildMembers}
+            imageSrc={`${process.env.PUBLIC_URL}/image7.png`}
+          />
+        </Accordion>
       </Grid>
-      <HStack>
-        <GuildMemberCard
-          imageSrc={`${process.env.PUBLIC_URL}/Avatar.png`}
-          name="Bob"
-          address="0xTalent"
-        />
-        <GuildMemberCard
-          imageSrc={`${process.env.PUBLIC_URL}/Avatar.png`}
-          name="Bob"
-          address="0xTalent"
-        />
-      </HStack>
-      <Text
-        placeSelf="start"
-        textStyle="subheading2"
-        color="gray.400"
-        userSelect="none"
-      >
-        Games
-      </Text>
-      <GameCard
-        name="Axie Infinity"
-        nftCount={13}
-        profileCount={69}
-        imageSrc={`${process.env.PUBLIC_URL}/image7.png`}
-      />
-    </Grid>
+    </>
   );
 }
