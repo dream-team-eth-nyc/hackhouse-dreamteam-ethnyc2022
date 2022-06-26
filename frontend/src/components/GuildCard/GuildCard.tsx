@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import {
   Avatar,
   Stack,
@@ -9,6 +9,7 @@ import {
   Text,
   Wrap,
   WrapItem,
+  BoxProps,
 } from "@chakra-ui/react";
 import truncateText from "../../utils/truncateText";
 
@@ -20,7 +21,7 @@ type GuildCardProps = {
   numNfts: number;
   numGames: number;
   games: string[];
-};
+} & BoxProps;
 
 const GuildCard: React.FC<GuildCardProps> = ({
   name,
@@ -30,8 +31,17 @@ const GuildCard: React.FC<GuildCardProps> = ({
   numGames,
   numNfts,
   games,
+  children,
+  ...props
 }) => (
-  <HStack spacing={12} bgColor="gray.900" px={12} py={8} borderRadius="md">
+  <HStack
+    spacing={12}
+    bgColor="gray.900"
+    px={12}
+    py={8}
+    borderRadius="md"
+    {...props}
+  >
     <Avatar size="xl" name={name} src={image} />
     <Stack justifyContent="start" alignItems="start" spacing={2}>
       <HStack alignItems="center">
@@ -80,6 +90,7 @@ const GuildCard: React.FC<GuildCardProps> = ({
         ))}
       </Wrap>
     </Stack>
+    {children}
   </HStack>
 );
 

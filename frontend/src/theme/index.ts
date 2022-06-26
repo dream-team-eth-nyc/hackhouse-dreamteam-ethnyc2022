@@ -42,6 +42,11 @@ const theme = extendTheme({
     },
   },
   components: {
+    ModalContent: {
+      baseStyle: {
+        background: "gray.800",
+      },
+    },
     Container: {
       baseStyle: {
         maxWidth: 1200,

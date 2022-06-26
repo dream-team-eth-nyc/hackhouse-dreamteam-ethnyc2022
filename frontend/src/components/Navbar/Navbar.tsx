@@ -26,7 +26,7 @@ const Navbar = () => {
         my={18}
       >
         <Link to="/">
-          <TeamIcon w={200} color="white" />
+          <TeamIcon w={20} h="auto" color="white" />
         </Link>
         <Box placeSelf="center">
           <LinkButton
