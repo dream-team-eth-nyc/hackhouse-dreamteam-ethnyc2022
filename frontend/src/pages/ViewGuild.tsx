@@ -28,6 +28,7 @@ import { BsPencil } from "react-icons/bs";
 import AddMemberModal from "../components/AddMemberModal";
 import { useState } from "react";
 import LeaveGuildModal from "../components/LeaveGuildModal";
+import QrCodeModal from "../components/QrCodeModal";
 
 const GuildBadge: React.FC<{ title: string; number: number } & BoxProps> = ({
   title,
@@ -136,7 +137,11 @@ const GameCard: React.FC<
     imageSrc: string;
     guildMembers: GuildMember[];
   } & BoxProps
-> = ({ name, imageSrc, guildMembers, ...props }) => (
+> = ({ name, imageSrc, guildMembers, ...props }) => {
+  const { isOpen,onOpen,onClose } = useDisclosure();
+
+  return (<>
+  <QrCodeModal isOpen={isOpen} onClose={onClose} />
   <AccordionItem borderColor="transparent" width="100%" mb="20px" {...props}>
     {({ isExpanded }) => (
       <>
@@ -258,7 +263,7 @@ const GameCard: React.FC<
                       You
                     </Button>
                   ) : (
-                    <Button variant="primary" placeSelf="center end">
+                    <Button variant="primary" placeSelf="center end" onClick={onOpen}>
                       Play
                     </Button>
                   )}
@@ -270,7 +275,10 @@ const GameCard: React.FC<
       </>
     )}
   </AccordionItem>
+  </>
 );
+}
+
 
 export default function ViewGuild() {
   const { isOpen, onClose, onOpen } = useDisclosure();
