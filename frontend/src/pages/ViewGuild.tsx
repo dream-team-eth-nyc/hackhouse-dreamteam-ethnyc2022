@@ -20,6 +20,7 @@ import {
   Divider,
   useDisclosure,
   AccordionItem,
+  Link,
 } from "@chakra-ui/react";
 import { BiChevronLeft, BiDotsHorizontalRounded } from "react-icons/bi";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -331,14 +332,14 @@ export default function ViewGuild() {
           />
           <Flex flexDir="column" gridRowGap="17px" userSelect="none">
             <Text textStyle="heading1">Dragon Guild</Text>
-            <Text textStyle="label1">OxBitches</Text>
+            <Link textStyle="label1" color="gray.300">0xa4...92c</Link>
             <Text fontSize="14px" color="gray.400">
-              The boys playing games about dragons
+              Dragon gamers unite!
             </Text>
           </Flex>
           <GuildBadge title="Members" number={members.length} />
           <GuildBadge title="Total NFTs" number={members.reduce((sum, member) => sum + member.nfts.length, 0)} />
-          <GuildBadge title="Games" number={1} />
+          <GuildBadge title="Games" number={2} />
           <Menu>
             <MenuButton
               placeSelf="center"
@@ -382,8 +383,13 @@ export default function ViewGuild() {
         </Text>
         <Accordion>
           <GameCard
+            name="Snook"
+            guildMembers={members}
+            imageSrc={`${process.env.PUBLIC_URL}/snook.png`}
+          />
+          <GameCard
             name="Axie Infinity"
-            guildMembers={fakeGuildMembers}
+            guildMembers={[fakeGuildMembers[1]]}
             imageSrc={`${process.env.PUBLIC_URL}/image7.png`}
           />
         </Accordion>
