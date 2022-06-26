@@ -26,7 +26,7 @@ const ConnectedStatusModal: React.FC<ConnectedStatusModalProps> = ({
 }) => {
   const { data } = useAccount();
   const { disconnectAsync, isLoading } = useDisconnect();
-  return (
+  return isOpen ? (
     <Modal isOpen={isOpen} onClose={onClose} size="md">
       <ModalOverlay />
       <ModalContent bgColor="gray.900">
@@ -64,7 +64,7 @@ const ConnectedStatusModal: React.FC<ConnectedStatusModalProps> = ({
         </ModalFooter>
       </ModalContent>
     </Modal>
-  );
+  ) : null;
 };
 
 export default ConnectedStatusModal;

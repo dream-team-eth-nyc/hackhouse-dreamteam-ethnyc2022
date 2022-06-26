@@ -14,17 +14,21 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  AccordionItem,
   AccordionButton,
   AccordionPanel,
   Accordion,
   AccordionIcon,
   Divider,
+  useDisclosure,
+  AccordionItem,
 } from "@chakra-ui/react";
 import { BiChevronLeft, BiDotsHorizontalRounded } from "react-icons/bi";
 import { AiOutlinePlus } from "react-icons/ai";
 import { GoTriangleDown } from "react-icons/go";
 import { useParams } from "react-router-dom";
+import AddMemberModal from "../components/AddMemberModal";
+import { useState } from "react";
+import LeaveGuildModal from "../components/LeaveGuildModal";
 
 const GuildBadge: React.FC<{ title: string; number: number } & BoxProps> = ({
   title,
@@ -284,109 +288,136 @@ const GameCard: React.FC<
 
 export default function ViewGuild() {
   const params = useParams();
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { isOpen: lOpen, onClose: lOnClose, onOpen: lOnOpen } = useDisclosure();
+
+  const [members, setMembers] = useState([
+    {
+      imageSrc: `${process.env.PUBLIC_URL}/Avatar.png`,
+      name: "Bob",
+      address: "0xTalent",
+    },
+    {
+      imageSrc: `${process.env.PUBLIC_URL}/Avatar.png`,
+      name: "Stephen",
+      address: "skrider.eth",
+    },
+  ]);
+
+  const handleAdd = () => {
+    setMembers((m) => [
+      ...m,
+      {
+        imageSrc: `${process.env.PUBLIC_URL}/Avatar.png`,
+        name: "Erina",
+        address: "0xErina",
+      },
+    ]);
+    onClose();
+  };
 
   return (
-    <Grid gridAutoColumns="auto" gridRowGap="20px" mx="149px" mt="20px">
-      <LinkButton
-        href="/"
-        variant="text"
-        color="blue.600"
-        placeSelf="start"
-        px="0"
-        transform="translateX(-0.5rem)"
-        _hover={{
-          color: "blue.300",
-        }}
-      >
-        <BiChevronLeft />
-        Back to your guilds
-      </LinkButton>
-      <Grid
-        gridTemplate={`
+    <>
+      {isOpen && (
+        <AddMemberModal isOpen={isOpen} onClose={onClose} onAdd={handleAdd} />
+      )}
+      {lOpen && (
+        <LeaveGuildModal
+          isOpen={lOpen}
+          onClose={lOnClose}
+          onLeave={() => console.log("leave")}
+        />
+      )}
+      <Grid gridAutoColumns="auto" gridRowGap="20px" mx="149px" mt="20px">
+        <LinkButton
+          href="/"
+          variant="text"
+          color="blue.600"
+          placeSelf="start"
+          px="0"
+          transform="translateX(-0.5rem)"
+          _hover={{
+            color: "blue.300",
+          }}
+        >
+          <BiChevronLeft />
+          Back to your guilds
+        </LinkButton>
+        <Grid
+          gridTemplate={`
 "emblem text" auto
 / auto 1fr
         `}
-        gridColumnGap="20px"
-        gridAutoFlow="column"
-        h="32"
-      >
-        <Image
-          src={`${process.env.PUBLIC_URL}/Avatar1.png`}
-          placeSelf="center"
-          borderRadius="999px"
-          height="32"
-          width="32"
-        />
-        <Flex flexDir="column" gridRowGap="17px" userSelect="none">
-          <Text textStyle="heading1">Dragon Guild</Text>
-          <Text textStyle="label1">OxBitches</Text>
-          <Text fontSize="14px" color="gray.400">
-            The boys playing games about dragons
-          </Text>
-        </Flex>
-        <GuildBadge title="Members" number={69} />
-        <GuildBadge title="Total NFTs" number={69} />
-        <GuildBadge title="Games" number={69} />
-        <Menu>
-          <MenuButton
+          gridColumnGap="20px"
+          gridAutoFlow="column"
+          h="32"
+        >
+          <Image
+            src={`${process.env.PUBLIC_URL}/Avatar1.png`}
             placeSelf="center"
-            as={IconButton}
-            icon={<BiDotsHorizontalRounded />}
+            borderRadius="999px"
+            height="32"
+            width="32"
           />
-          <MenuList>
-            <MenuItem>Leave Guild</MenuItem>
-            <MenuItem>Edit Guild</MenuItem>
-            {/* TODO replace with correct explorer */}
-            <MenuItem>See on Snowtrace</MenuItem>
-          </MenuList>
-        </Menu>
-      </Grid>
-      <Grid gridAutoFlow="column">
+          <Flex flexDir="column" gridRowGap="17px" userSelect="none">
+            <Text textStyle="heading1">Dragon Guild</Text>
+            <Text textStyle="label1">OxBitches</Text>
+            <Text fontSize="14px" color="gray.400">
+              The boys playing games about dragons
+            </Text>
+          </Flex>
+          <GuildBadge title="Members" number={69} />
+          <GuildBadge title="Total NFTs" number={69} />
+          <GuildBadge title="Games" number={69} />
+          <Menu>
+            <MenuButton
+              placeSelf="center"
+              as={IconButton}
+              icon={<BiDotsHorizontalRounded />}
+            />
+            <MenuList>
+              <MenuItem onClick={lOnOpen}>Leave Guild</MenuItem>
+              <MenuItem>Edit Guild</MenuItem>
+              {/* TODO replace with correct explorer */}
+              <MenuItem>See on Snowtrace</MenuItem>
+            </MenuList>
+          </Menu>
+        </Grid>
+        <Grid gridAutoFlow="column">
+          <Text
+            placeSelf="start"
+            textStyle="subheading2"
+            color="gray.400"
+            userSelect="none"
+          >
+            Members
+          </Text>
+          <Button variant="primary" placeSelf="end" onClick={onOpen}>
+            <AiOutlinePlus />
+            Add Member
+          </Button>
+        </Grid>
+        <HStack>
+          {members.map((props) => (
+            <GuildMemberCard key={JSON.stringify(props)} {...props} />
+          ))}
+        </HStack>
         <Text
           placeSelf="start"
           textStyle="subheading2"
           color="gray.400"
           userSelect="none"
         >
-          Members
+          Games
         </Text>
-        <Button variant="primary" placeSelf="end">
-          <AiOutlinePlus />
-          Add Member
-        </Button>
+        <Accordion>
+          <GameCard
+            name="Axie Infinity"
+            guildMembers={fakeGuildMembers}
+            imageSrc={`${process.env.PUBLIC_URL}/image7.png`}
+          />
+        </Accordion>
       </Grid>
-      <HStack>
-        <GuildMemberCard
-          imageSrc={`${process.env.PUBLIC_URL}/Avatar.png`}
-          name="Bob"
-          address="0xTalent"
-        />
-        <GuildMemberCard
-          imageSrc={`${process.env.PUBLIC_URL}/Avatar.png`}
-          name="Bob"
-          address="0xTalent"
-        />
-      </HStack>
-      <Text
-        placeSelf="start"
-        textStyle="subheading2"
-        color="gray.400"
-        userSelect="none"
-      >
-        Games
-      </Text>
-      <Accordion>
-        <GameCard
-          name="Axie Infinity"
-          guildMembers={fakeGuildMembers}
-          imageSrc={`${process.env.PUBLIC_URL}/image7.png`}
-        />
-        <GameCard
-          name="Axie Infinity"
-          guildMembers={fakeGuildMembers}
-          imageSrc={`${process.env.PUBLIC_URL}/image7.png`}
-        />
-      </Accordion>
-    </Grid>
+    </>
   );
 }

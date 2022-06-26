@@ -53,20 +53,20 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
             Add member to guild using wallet address or QR code
           </Text>
           <FormInput
-            label="Wallet Address"
+            label="Wallet Address or ENS"
             inputGroupProps={{ size: "lg" }}
             error={errors?.address?.message}
-            helperText="The users wallet address"
+            helperText="The users wallet address or ENS"
             rightItem={
               <IconButton aria-label="Scan code" icon={<FaCamera />} />
             }
             my={6}
             inputProps={{
-              placeholder: "0x...",
+              placeholder: "0x... or caelin.eth",
               ...register("address", {
-                minLength: {
-                  value: 42,
-                  message: "Key must be 42 characters long",
+                required: {
+                  value: true,
+                  message: "This is required",
                 },
               }),
             }}
