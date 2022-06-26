@@ -6,6 +6,7 @@ import "../GuildManager.sol";
 import "forge-std/Test.sol";
 
 import "@openzeppelin/contracts/utils/Strings.sol";
+import {IWorldID} from "../worldcoin/interfaces/IWorldID.sol";
 
 contract GuildManagerTest is Test {
     GuildManager manager;
@@ -13,7 +14,7 @@ contract GuildManagerTest is Test {
 
     function setUp() public {
         // deploy singleton
-        manager = new GuildManager();
+        manager = new GuildManager(IWorldID(address(1)));
     }
 
     function testCreateGuild() public {
@@ -32,9 +33,9 @@ contract GuildManagerTest is Test {
        bytes memory _string = new bytes(42);
        _string[0] = '0';
        _string[1] = 'x';
-       for(uint i = 0; i < 20; i++) {
-           _string[2+i*2] = HEX[uint8(_bytes[i + 12] >> 4)];
-           _string[3+i*2] = HEX[uint8(_bytes[i + 12] & 0x0f)];
+       for(uint j = 0; j < 20; j++) {
+           _string[2+j*2] = HEX[uint8(_bytes[j + 12] >> 4)];
+           _string[3+j*2] = HEX[uint8(_bytes[j + 12] & 0x0f)];
        }
        return string(_string);
     }

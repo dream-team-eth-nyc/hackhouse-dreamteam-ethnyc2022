@@ -3,13 +3,21 @@ pragma solidity 0.8.15;
 
 import "./GuildBond.sol";
 import "./AugmentedGnosisSafe.sol";
+import {IWorldID} from "./worldcoin/interfaces/IWorldID.sol";
 
 contract GuildManager {
     mapping(AugmentedGnosisSafe => mapping(GuildBond => bool)) isSafeInGuild;
 
+    /// @dev The World ID instance that will be used for verifying proofs
+    IWorldID internal immutable worldId;
+
+    constructor(IWorldID _worldId){
+        worldId = _worldId;
+    }
+
     /// @notice create a guild and become its chief
     function createGuild(string memory name, string memory symbol) external returns(GuildBond) {
-        GuildBond newGuild = new GuildBond(name, symbol);
+        GuildBond newGuild = new GuildBond(name, symbol, worldId);
         newGuild.transferOwnership(msg.sender);
         return newGuild;
     }
