@@ -15,6 +15,8 @@ import {
 import { useForm } from "react-hook-form";
 import { FormInput } from "../FormInputs";
 import { FaCamera } from "react-icons/fa";
+import {useContractWrite} from 'wagmi';
+import guildBondAbi from '../../abis/GuildBond.json';
 
 type AddMemberData = {
   address: string;
@@ -23,7 +25,7 @@ type AddMemberData = {
 type AddMemberModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onAdd: (address: string) => void;
+  onAdd: () => void;
 };
 
 const AddMemberModal: React.FC<AddMemberModalProps> = ({
@@ -31,14 +33,25 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
   onClose,
   onAdd,
 }) => {
+  const { isLoading, writeAsync } = useContractWrite(
+    {
+      addressOrName: '0x26984bB34673A5ADdE416f418EFa5784EbAAF56F',
+      contractInterface: guildBondAbi,
+    },
+    'emitSoulBond',
+  );
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<AddMemberData>();
 
-  const onSubmit = ({ address }: AddMemberData) => {
-    onAdd(address);
+  const onSubmit = async ({ address }: AddMemberData) => {
+    const txn =await  writeAsync({
+      args: [address]
+    })
+    onAdd();
   };
 
   return (
@@ -74,7 +87,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
         </ModalBody>
 
         <ModalFooter textAlign="center" justifyContent="center">
-          <Button mr={3} onClick={handleSubmit(onSubmit)} colorScheme="blue">
+          <Button mr={3} onClick={handleSubmit(onSubmit)} colorScheme="blue" isLoading={isLoading}>
             Add Member
           </Button>
         </ModalFooter>

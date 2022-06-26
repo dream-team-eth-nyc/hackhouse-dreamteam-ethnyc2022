@@ -25,7 +25,7 @@ const ConnectButton: React.FC = () => {
           onClose={connectedOnClose}
         />
         <Button variant="outline" onClick={connectedOnOpen}>
-          {truncateText(data?.address)}
+          caelin.eth | {truncateText(data?.address)}
         </Button>
         <Avatar onClick={sOnOpen} size="md" cursor="pointer" />
 

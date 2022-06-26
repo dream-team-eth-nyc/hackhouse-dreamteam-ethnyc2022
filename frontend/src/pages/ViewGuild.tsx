@@ -29,6 +29,8 @@ import { useParams } from "react-router-dom";
 import AddMemberModal from "../components/AddMemberModal";
 import { useState } from "react";
 import LeaveGuildModal from "../components/LeaveGuildModal";
+import {useContractWrite} from 'wagmi';
+import guildBondAbi from '../abis/GuildBond.json';
 
 const GuildBadge: React.FC<{ title: string; number: number } & BoxProps> = ({
   title,
@@ -304,7 +306,10 @@ export default function ViewGuild() {
     },
   ]);
 
-  const handleAdd = () => {
+
+
+
+  const handleAdd = async () => {
     setMembers((m) => [
       ...m,
       {

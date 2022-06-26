@@ -41,7 +41,7 @@ const Home: React.FC = () => {
                 cursor="pointer"
                 onClick={onOpen}
               >
-                (2 pending)
+                (1 pending)
               </Text>
             </HStack>
             <Button
@@ -56,17 +56,19 @@ const Home: React.FC = () => {
           <SimpleGrid columns={2} spacing={8} mt={8}>
             <Link to="/guilds/test">
               <GuildCard
+                image={`${process.env.PUBLIC_URL}/Avatar1.png`}
                 name="Dragon Guild"
                 address="0x66C692026043a4E2E3276dceB7Fa476167CA0C09"
                 members={[
                   {
-                    name: "Test",
+                    name: "Rabid Melon",
+                    image: 'https://forkast.news/wp-content/uploads/2022/03/NFT-Avatar.png'
                   },
-                  { name: "Test 2" },
+                  { name: "Crazy Quail", image: 'http://jingculturecommerce.com/wp-content/uploads/2021/11/rtfkt-murakami-clone-x-4-1024x682.jpg' },
                 ]}
-                numNfts={12}
-                numGames={8}
-                games={["Axie Infinity", "Eve Online", "Ember Swords"]}
+                numNfts={1}
+                numGames={1}
+                games={["Snook"]}
               />
             </Link>
           </SimpleGrid>

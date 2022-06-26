@@ -56,7 +56,7 @@ const GuildCard: React.FC<GuildCardProps> = ({
         </Text>
         {members.slice(0, 8).map(({ name: memberName, image }) => (
           <Avatar
-            size="2xs"
+            size="xs"
             name={memberName}
             src={image}
             key={memberName + image}
