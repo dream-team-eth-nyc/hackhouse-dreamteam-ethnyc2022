@@ -9,15 +9,6 @@ const theme = extendTheme({
   config,
   colors: {
     background: "linear-gradient(117.56deg, #1B2037 42.84%, #0F1221 98.45%)",
-    gray: {
-      200: "#0F1221",
-      300: "#63B3ED",
-      700: "#2D3748",
-    },
-    blue: {
-      200: "#90CDF4",
-      800: "#2A4365",
-    },
     primaryFontColor: {
       darkMode: "gray.50",
     },
@@ -27,9 +18,20 @@ const theme = extendTheme({
   },
   textStyles: {
     heading1: {
-      fontFamily: "Inter",
       fontWeight: "bold",
       fontSize: "36px",
+    },
+    heading2: {
+      fontWeight: "bold",
+      fontSize: "26px",
+    },
+    subheading2: {
+      fontWeight: "normal",
+      fontSize: "20px",
+    },
+    label1: {
+      fontSize: "12px",
+      color: "gray.500",
     },
   },
   styles: {
