@@ -15,7 +15,6 @@ import {
   MenuList,
   MenuItem,
   AccordionButton,
-  AccordionPanel,
   Accordion,
   AccordionIcon,
   Divider,
@@ -25,10 +24,12 @@ import {
 import { BiChevronLeft, BiDotsHorizontalRounded } from "react-icons/bi";
 import { AiOutlinePlus } from "react-icons/ai";
 import { GoTriangleDown } from "react-icons/go";
-import { useParams } from "react-router-dom";
+import { BsPencil } from "react-icons/bs";
 import AddMemberModal from "../components/AddMemberModal";
 import { useState } from "react";
 import LeaveGuildModal from "../components/LeaveGuildModal";
+import {useContractWrite} from 'wagmi';
+import guildBondAbi from '../abis/GuildBond.json';
 
 const GuildBadge: React.FC<{ title: string; number: number } & BoxProps> = ({
   title,
@@ -59,7 +60,7 @@ const GuildMemberCard: React.FC<
 "image address" auto
 / 48px auto
 `}
-    width="200px"
+    width="230px"
     userSelect="none"
     color="white"
     borderRadius="10px"
@@ -94,7 +95,7 @@ const GuildMemberCard: React.FC<
   </Grid>
 );
 
-const MY_ADDRESS_TEMP = "0xFuture";
+const MY_NAME = "Crazy Quail";
 
 type GuildMember = {
   name: string;
@@ -111,36 +112,23 @@ type GameNft = {
 
 const fakeGuildMembers: GuildMember[] = [
   {
-    name: "Ben",
-    address: "0xMoney",
-    message: "All warfare is based",
-    imageSrc: `${process.env.PUBLIC_URL}/image7.png`,
+    name: "Rabid Melon",
+    address: "",
+    message: "Victory or Death!",
+    imageSrc: 'https://forkast.news/wp-content/uploads/2022/03/NFT-Avatar.png',
     nfts: [
       {
-        imageSrc: `${process.env.PUBLIC_URL}/Avatar.png`,
+        imageSrc: `${process.env.PUBLIC_URL}/Snake.jpg`,
         link: "https://nyc.ethglobal.co/",
-      },
-      {
-        imageSrc: `${process.env.PUBLIC_URL}/Avatar1.png`,
-        link: "https://nyc.ethglobal.co/",
-      },
+      }
     ],
   },
   {
-    name: "Chuck",
-    address: "0xDollars",
-    message: "Hodl to guidl",
-    imageSrc: `${process.env.PUBLIC_URL}/image7.png`,
-    nfts: [
-      {
-        imageSrc: `${process.env.PUBLIC_URL}/Avatar.png`,
-        link: "https://nyc.ethglobal.co/",
-      },
-      {
-        imageSrc: `${process.env.PUBLIC_URL}/Avatar1.png`,
-        link: "https://nyc.ethglobal.co/",
-      },
-    ],
+    name: "Crazy Quail",
+    address: "crazyquail.eth",
+    message: "sic itur ad astra.",
+    imageSrc: 'http://jingculturecommerce.com/wp-content/uploads/2021/11/rtfkt-murakami-clone-x-4-1024x682.jpg',
+    nfts: [],
   },
 ];
 
@@ -254,20 +242,20 @@ const GameCard: React.FC<
                       {member.address}
                     </Text>
                   </Grid>
-                  <Text placeSelf="center start">{member.message}</Text>
+                  <Text placeSelf="center start">{member.message} {member.name === MY_NAME && <IconButton ml="1rem" icon={<BsPencil />} aria-label="edit" />}</Text>
                   <Text>{member.nfts.length} NFTs</Text>
                   <Box overflow="hidden">
-                    <Grid gridColumnGap="10px" gridAutoFlow="column">
-                      {member.nfts.map((nft, index) => (
+                    <Grid gridColumnGap="10px" gridAutoFlow="column" placeItems="start">
+                      {member.nfts.length ? member.nfts.map((nft, index) => (
                         <Image
                           h="70px"
                           src={nft.imageSrc}
                           key={`${member.name}-nft-${index}`}
                         />
-                      ))}
+                      )) : "No NFTs For Game Owned"}
                     </Grid>
                   </Box>
-                  {member.address === MY_ADDRESS_TEMP ? (
+                  {member.name === MY_NAME ? (
                     <Button variant="primary" disabled placeSelf="center end">
                       You
                     </Button>
@@ -287,32 +275,14 @@ const GameCard: React.FC<
 );
 
 export default function ViewGuild() {
-  const params = useParams();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { isOpen: lOpen, onClose: lOnClose, onOpen: lOnOpen } = useDisclosure();
 
-  const [members, setMembers] = useState([
-    {
-      imageSrc: `${process.env.PUBLIC_URL}/Avatar.png`,
-      name: "Bob",
-      address: "0xTalent",
-    },
-    {
-      imageSrc: `${process.env.PUBLIC_URL}/Avatar.png`,
-      name: "Stephen",
-      address: "skrider.eth",
-    },
-  ]);
+  const [members, setMembers] = useState([fakeGuildMembers[1]]);
 
-  const handleAdd = () => {
-    setMembers((m) => [
-      ...m,
-      {
-        imageSrc: `${process.env.PUBLIC_URL}/Avatar.png`,
-        name: "Erina",
-        address: "0xErina",
-      },
-    ]);
+  const handleAdd = (address: string) => {
+    fakeGuildMembers[0].address = address;
+    setMembers(fakeGuildMembers);
     onClose();
   };
 
@@ -366,9 +336,9 @@ export default function ViewGuild() {
               The boys playing games about dragons
             </Text>
           </Flex>
-          <GuildBadge title="Members" number={69} />
-          <GuildBadge title="Total NFTs" number={69} />
-          <GuildBadge title="Games" number={69} />
+          <GuildBadge title="Members" number={members.length} />
+          <GuildBadge title="Total NFTs" number={members.reduce((sum, member) => sum + member.nfts.length, 0)} />
+          <GuildBadge title="Games" number={1} />
           <Menu>
             <MenuButton
               placeSelf="center"
