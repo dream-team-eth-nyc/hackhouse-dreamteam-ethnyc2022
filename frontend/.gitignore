@@ -3,6 +3,7 @@
 # dependencies
 /node_modules
 /.pnp
+/.yarn/install-stage.gz
 .pnp.js
 
 # testing
