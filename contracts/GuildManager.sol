@@ -5,6 +5,7 @@ import "./GuildBond.sol";
 import "./AugmentedGnosisSafe.sol";
 import {IWorldID} from "./worldcoin/interfaces/IWorldID.sol";
 
+/// @notice main contract of the Guidl platform, create your guild 
 contract GuildManager {
     mapping(GuildBond => AugmentedGnosisSafe) public guildToSafe;
     mapping(AugmentedGnosisSafe => mapping(GuildBond => bool)) isSafeInGuild;

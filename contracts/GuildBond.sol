@@ -14,6 +14,10 @@ contract GuildBond is ERC721, ERC721Burnable, Ownable {
     using Counters for Counters.Counter;
     using ByteHasher for bytes;
 
+    event Invitation (
+        address pendingMember
+    );
+
     Counters.Counter private _tokenIdCounter;
     mapping(address => bool) private isInvited;
 
@@ -36,8 +40,12 @@ contract GuildBond is ERC721, ERC721Burnable, Ownable {
 
     function invite(address newMember) external onlyOwner {
         require(balanceOf(newMember) == 0, "This player is already in your guild");
+        require(!isInvited[newMember], "You already invited this player");
         
         isInvited[newMember] = true;
+
+        // This event is meant to be picked up by the graph protocol to send an EPNS notification to the new member
+        emit Invitation(newMember);
     }
 
     /// @notice humanity of the new player is checked through worldcoin
