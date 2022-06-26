@@ -1,0 +1,87 @@
+[
+    {
+      "inputs": [
+        {
+          "internalType": "contract IWorldID",
+          "name": "_worldId",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "symbol",
+          "type": "string"
+        }
+      ],
+      "name": "createGuild",
+      "outputs": [
+        {
+          "internalType": "contract GuildBond",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract GuildBond",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "guildToSafe",
+      "outputs": [
+        {
+          "internalType": "contract AugmentedGnosisSafe",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract GuildBond",
+          "name": "guild",
+          "type": "address"
+        }
+      ],
+      "name": "pledgeAllegiance",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract AugmentedGnosisSafe",
+          "name": "safe",
+          "type": "address"
+        },
+        {
+          "internalType": "contract GuildBond",
+          "name": "guild",
+          "type": "address"
+        }
+      ],
+      "name": "startPlayingWithSafeInGuild",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
