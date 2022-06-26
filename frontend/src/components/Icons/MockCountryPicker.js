@@ -6,6 +6,7 @@ export default createIcon({
   displayName: "TeamIcon",
   viewBox: "0 0 68 20",
   // path can also be an array of elements, if you have multiple paths, lines, shapes, etc.
+  // eslint-disable-next-line no-sparse-arrays
   path: [
     <rect y="2.5" width="20" height="13.75" fill="#EEF3F8" />,
     <rect y="2.5" width="11.25" height="8.75" fill="#41479B" />,
