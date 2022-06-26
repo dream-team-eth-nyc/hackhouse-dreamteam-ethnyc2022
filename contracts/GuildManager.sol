@@ -5,6 +5,7 @@ import "./GuildBond.sol";
 import "./AugmentedGnosisSafe.sol";
 
 contract GuildManager {
+    mapping(GuildBond => AugmentedGnosisSafe) public guildToSafe;
     mapping(AugmentedGnosisSafe => mapping(GuildBond => bool)) isSafeInGuild;
 
     /// @notice create a guild and become its chief
@@ -16,8 +17,9 @@ contract GuildManager {
 
     function pledgeAllegiance(GuildBond guild) external {
         require(AugmentedGnosisSafe(payable(msg.sender)).isOwner(address(this)), "add the manager as owner first");
-
-        isSafeInGuild[AugmentedGnosisSafe(payable(msg.sender))][guild] = true;
+        AugmentedGnosisSafe safeForGuild = AugmentedGnosisSafe(payable(msg.sender));
+        // guildToSafe[guild] = safeForGuild;
+        isSafeInGuild[safeForGuild][guild] = true;
     }
 
     function startPlayingWithSafeInGuild(AugmentedGnosisSafe safe, GuildBond guild) external {

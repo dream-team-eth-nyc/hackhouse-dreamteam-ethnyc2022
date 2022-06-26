@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract GuildManagerTest is Test {
     GuildManager manager;
-    event Logging(string tellUsMore);
+    // event Logging(string tellUsMore);
 
     function setUp() public {
         // deploy singleton
@@ -23,8 +23,20 @@ contract GuildManagerTest is Test {
         assertEq(guild.owner(), address(this));
     }
 
-    // Helpers
+    function testPledgeAlleigiance() public {
+        string memory name = "Club Penguin";
+        string memory symbol = "penguin";
+        GuildBond guild = manager.createGuild(name, symbol);
+        manager.pledgeAllegiance(guild);
 
+        // console.log("DEBUGGING YO WTF");
+        // console.log(manager.guildToSafe[guild]);
+        // console.log("DEBUGGING safeForGuild");
+        // console.log(safeForGuild);
+        // assert(manager.isSafeInGuild[safeForGuild][guild]);
+    }
+
+    // Helpers
     function addressToString(address _address) public pure returns(string memory) {
       uint256 i = uint256(uint160(_address));
        bytes32 _bytes = bytes32(uint256(i));
