@@ -15,6 +15,8 @@ import {
 import { useForm } from "react-hook-form";
 import { FormInput } from "../FormInputs";
 import { FaCamera } from "react-icons/fa";
+import {useContractWrite} from 'wagmi';
+import guildBondAbi from '../../abis/GuildBond.json';
 
 type AddMemberData = {
   address: string;
@@ -37,7 +39,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
     formState: { errors },
   } = useForm<AddMemberData>();
 
-  const onSubmit = ({ address }: AddMemberData) => {
+  const onSubmit = async ({ address }: AddMemberData) => {
     onAdd(address);
   };
 
